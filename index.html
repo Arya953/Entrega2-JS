@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Gimnasio Atlas</title>
+</head>
+<body>
+    <header>
+        <h1>Gimnasio Atlas</h1>
+    </header>
+    <div id="carritoIcon">
+        <span></span>
+        <img src="./imagenes/carrito.png" alt="Carrito">
+    </div>
+    <div id="carrito">
+        <div>
+            <h3>Ejercicios</h3>
+            <div id="productosCarrito">
+                <div class="producto">
+                    <h3>Titulo</h3>
+                    <p>Calorías: 8 Kcal</p>
+                    <p>Repeticiones: 10</p>
+                    <button class="botonerEliminar">X</button>
+                </div>
+            </div>
+        </div>
+        <div id="total">0Kcal</div>
+    </div>
+    <hr>
+    <main>
+        <h2>Bienvenido a tu portal de Entrenamiento</h2>
+        <div class="imageninicio">
+            <img src="./imagenes/inicio.png" alt="inicio" width="600px">
+        </div>
+        <h2>Tutorial para tu entreno</h2>
+        <p>Es muy fácil, simplemente elije que parte del cuerpo trabajarás: </p>
+            <ul>
+                <li><a href="#TrenSuperior">Tren Superior</a></li>
+                <li><a href="#TrenInferior">Tren Inferior</a></li>
+                <li><a href="#CORE">CORE</a></li>
+            </ul> 
+            <p>selecciona los ejercicios que has realizado, coloca cantidad de repeticiones y que peso, ¡Y lo tienes! En la barra lateral aparecerán los ejercicios realizados y las calorías consumidas.</p>
+        <h2 id="TrenSuperior">TREN SUPERIOR</h2>
+        <div class="main">
+            <div id="productos" class="productos">
+
+            </div>
+        </div>
+        <h2 id="TrenInferior">TREN INFERIOR</h2>
+        <div class="main">
+            <div class="productos" id="treninferior">
+            </div>
+        </div>
+        <h2 id="CORE">CORE</h2>
+        <div class="main">
+            <div class="productos" id="core">
+            </div>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+    <script src="./js/main.js"></script>
+</body>
+</html>

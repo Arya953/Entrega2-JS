@@ -1,0 +1,155 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.imageninicio{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+#carritoIcon{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ff4343;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+#carritoIcon img{
+    width: 30px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+#carrito{
+    position: fixed;
+    min-height: 100vh;
+    width: 100vw;
+    background-color: white;
+    top: 0;
+    right: -100%;
+    transition: right 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 100px;
+    overflow-y: auto;
+}
+
+#carrito.active{
+    right: 0;
+}
+
+#total {
+    position: fixed;
+    bottom: 0;
+    background-color: red;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    margin: 20px 0;
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffe9e9;
+    color: black;
+}
+
+h1, h2{
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 40px 0;
+    text-align: center;
+}
+
+ul{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    list-style: none;
+    padding: 10px;
+}
+
+li{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color:#f09090;
+    border-radius: 10px;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.main{
+    padding: 20px;
+}
+
+.productos{
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #f09090;
+    gap: 20px;
+    border-radius: 10px;
+}
+p{
+    text-align: center;
+}
+
+
+.producto{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f83535;
+    border-radius: 10px;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.producto img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.producto .img{
+    height: 150px;
+    width: 150px;
+    overflow: hidden;
+}
+
+
+@media (min-width: 768px){
+    .productos{
+        max-width: 80%;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 30px;
+    }
+
+    #carrito{
+        width: 400px;
+    }
+
+}
