@@ -1,8 +1,10 @@
-document.getElementById("carritoIcon").addEventListener("click", ()=>{
-    document.getElementById("carrito").classList.toggle("active")
-})
+document.getElementById("carritoIcon").addEventListener("click", () => {
+    document.getElementById("carrito").classList.toggle("active");
+});
 
-const EjerciciosTrenSuperior =[
+let carrito = [];
+
+const EjerciciosTrenSuperior = [
     {
         id: 1,
         nombre: "Curl Bíceps",
@@ -88,58 +90,126 @@ const EjerciciosCORE = [
     },
     {
         id: 12,
-        nombre: "Puente de Gluteos",
+        nombre: "Puente de Glúteos",
         categoria: "CORE",
         img: "../imagenes/puente-gluteo.png",
         Kcal: 0.4,
     }
 ]
 
-const productos = document.getElementById ("productos")
-const treninferior = document.getElementById ("treninferior")
-const core = document.getElementById ("core")
+const productos = document.getElementById("productos")
+const treninferior = document.getElementById("treninferior")
+const core = document.getElementById("core")
+const productoscarrito = document.getElementById("productoscarrito")
 
-document.addEventListener ("DOMContentLoaded", () =>{
-    EjerciciosTrenSuperior.forEach(el => {
-            productos.innerHTML +=
-            `
-                <div id="${el.id}" class="producto">
-                    <h3>${el.nombre}</h3>
-                    <div><img src="${el.img}"></div>
-                    <p>Kcal por repeticion: <span>${el.Kcal}</span>Kcal</p>
-                    <p>Categoría:${el.categoria}</p>
-                    <button class="botonAgregador">Agregar</button>
-                </div>
-            `
-    })
+productos.addEventListener("click", (evento) => {
+    if (evento.target.classList.contains("botonAgregador")) {
+        agregarAlCarrito(evento.target);
+    }
 })
 
-document.addEventListener ("DOMContentLoaded", () =>{
-    EjerciciosTrenInferior.forEach(el => {
-            treninferior.innerHTML +=
-            `
-                <div id="${el.id}" class="producto">
-                    <h3>${el.nombre}</h3>
-                    <div><img src="${el.img}"></div>
-                    <p>Kcal por repeticion: <span>${el.Kcal}</span>Kcal</p>
-                    <p>Categoría:${el.categoria}</p>
-                    <button class="botonAgregador">Agregar</button>
-                </div>
-            `
-    })
+treninferior.addEventListener("click", (evento) => {
+    if (evento.target.classList.contains("botonAgregador")) {
+        agregarAlCarrito(evento.target);
+    }
 })
 
-document.addEventListener ("DOMContentLoaded", () =>{
-    EjerciciosCORE.forEach(el => {
-            core.innerHTML +=
-            `
-                <div id="${el.id}" class="producto">
-                    <h3>${el.nombre}</h3>
-                    <div><img src="${el.img}"></div>
-                    <p>Kcal por repeticion: <span>${el.Kcal}</span>Kcal</p>
-                    <p>Categoría:${el.categoria}</p>
-                    <button class="botonAgregador">Agregar</button>
-                </div>
-            `
+core.addEventListener("click", (evento) => {
+    if (evento.target.classList.contains("botonAgregador")) {
+        agregarAlCarrito(evento.target);
+    }
+})
+
+function agregarAlCarrito(boton) {
+    const producto = boton.parentElement;
+    const nombre = producto.children[0].innerText;
+    const Kcal = Number(producto.children[2].children[0].innerText);
+
+    const productoExistente = carrito.find(item => item.nombre === nombre)
+
+    if (productoExistente){
+        productoExistente.cantidad += 1;
+    } else {
+        carrito.push({
+            nombre: nombre,
+            Kcal: Kcal,
+            cantidad: 1,
+        })
+    }
+    actualizadoracarrito()
+}
+
+function actualizadoracarrito() {
+    productoscarrito.innerHTML = "";
+    carrito.forEach((el, index) => {
+        productoscarrito.innerHTML += `
+            <div class="producto">
+                <h3>${el.nombre}</h3>
+                <p>Calorías: ${el.Kcal}</p>
+                <p>Repeticiones: ${el.cantidad}</p>
+                <button class="botonEliminar" data-index "${index}">X</button>
+            </div>
+        `
+    })
+
+    localStorage.setItem("ccarrito", JSON.stringify(carrito));
+
+    total.innerText = carrito.reduce((acc, el)=>{
+        return acc + el.Kcal * el.cantidad   
+    }, 0);
+
+    const botonesEliminar = document.querySelectorAll(".botonEliminar");
+    botonesEliminar.forEach(boton=> {
+        boton.addEventListener("click", eliminarDelCarrito)
+    })
+}
+
+function eliminarDelCarrito(evento) {
+    const index = evento.target.getAttribute("data-index");
+    carrito.splice(index, 1);
+    actualizadoracarrito ()
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const carritoGuardado = localStorage.getItem("carrito");
+    if (carritoGuardado) {
+        carrito =JSON.parse(carritoGuardado);
+        actualizadoracarrito ()
+    }
+
+    EjerciciosTrenSuperior.forEach((el) => {
+        productos.innerHTML += `
+            <div id="${el.id}" class="producto">
+                <h3>${el.nombre}</h3>
+                <div><img src="${el.img}" alt="${el.nombre}"></div>
+                <p>Kcal por repetición: <span>${el.Kcal}</span>Kcal</p>
+                <p>Categoría: ${el.categoria}</p>
+                <button class="botonAgregador">Agregar</button>
+            </div>
+        `;
+    });
+
+    EjerciciosTrenInferior.forEach((el) => {
+        treninferior.innerHTML += `
+            <div id="${el.id}" class="producto">
+                <h3>${el.nombre}</h3>
+                <div><img src="${el.img}" alt="${el.nombre}"></div>
+                <p>Kcal por repetición: <span>${el.Kcal}</span>Kcal</p>
+                <p>Categoría: ${el.categoria}</p>
+                <button class="botonAgregador">Agregar</button>
+            </div>
+        `
+    })
+
+    EjerciciosCORE.forEach((el) => {
+        core.innerHTML += `
+            <div id="${el.id}" class="producto">
+                <h3>${el.nombre}</h3>
+                <div><img src="${el.img}" alt="${el.nombre}"></div>
+                <p>Kcal por repetición: <span>${el.Kcal}</span>Kcal</p>
+                <p>Categoría: ${el.categoria}</p>
+                <button class="botonAgregador">Agregar</button>
+            </div>
+        `
     })
 })
