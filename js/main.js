@@ -1,14 +1,14 @@
-document.getElementById("carritoIcon").addEventListener("click", () => {
-    document.getElementById("carrito").classList.toggle("active");
+document.getElementById("rutinaIcon").addEventListener("click", () => {
+    document.getElementById("rutina").classList.toggle("active");
 });
 
 document.addEventListener('click', (event) => {
-    if (!carrito.contains(event.target) && event.target !== carritoIcon) {
-        carrito.classList.remove('active');
+    if (!rutina.contains(event.target) && event.target !== rutinaIcon) {
+        rutina.classList.remove('active');
     }
 });
 
-let carrito = [];
+let rutina = [];
 
 const EjerciciosTrenSuperior = [
     {
@@ -106,40 +106,40 @@ const EjerciciosCORE = [
 const productos = document.getElementById("productos")
 const treninferior = document.getElementById("treninferior")
 const core = document.getElementById("core")
-const productoscarrito = document.getElementById("productoscarrito");
+const productosrutina = document.getElementById("productosrutina");
 const finalizarEntrenamientoBtn = document.getElementById ("finalizarEntrenamiento");
 
 productos.addEventListener("click", (evento) => {
     if (evento.target.classList.contains("botonAgregador")) {
-        agregarAlCarrito(evento.target);
+        agregarARutina(evento.target);
     }
 })
 
 treninferior.addEventListener("click", (evento) => {
     if (evento.target.classList.contains("botonAgregador")) {
-        agregarAlCarrito(evento.target);
+        agregarARutina(evento.target);
     }
 })
 
 core.addEventListener("click", (evento) => {
     if (evento.target.classList.contains("botonAgregador")) {
-        agregarAlCarrito(evento.target);
+        agregarARutina(evento.target);
     }
 })
 
 finalizarEntrenamientoBtn.addEventListener("click", finalizarEntrenamiento);
 
-function agregarAlCarrito(boton) {
+function agregarARutina(boton) {
     const producto = boton.parentElement;
     const nombre = producto.children[0].innerText;
     const Kcal = Number(producto.children[2].children[0].innerText);
 
-    const productoExistente = carrito.find(item => item.nombre === nombre)
+    const productoExistente = rutina.find(item => item.nombre === nombre)
 
     if (productoExistente){
         productoExistente.cantidad += 1;
     } else {
-        carrito.push({
+        rutina.push({
             nombre: nombre,
             Kcal: Kcal,
             cantidad: 1,
@@ -153,13 +153,13 @@ function agregarAlCarrito(boton) {
         confirmButtonText: 'Entendido'
     });
 
-    actualizadoracarrito()
+    actualizarrutina()
 }
 
-function actualizadoracarrito() {
-    productoscarrito.innerHTML = "";
-    carrito.forEach((el, index) => {
-        productoscarrito.innerHTML += `
+function actualizarrutina() {
+    productosrutina.innerHTML = "";
+    rutina.forEach((el, index) => {
+        productosrutina.innerHTML += `
             <div class="producto">
                 <h3>${el.nombre}</h3>
                 <p>Calorías: ${el.Kcal}</p>
@@ -169,19 +169,19 @@ function actualizadoracarrito() {
         `
     })
 
-    localStorage.setItem("carrito", JSON.stringify(carrito));
+    localStorage.setItem("rutina", JSON.stringify(rutina));
 
-    total.innerText = carrito.reduce((acc, el)=>{
+    total.innerText = rutina.reduce((acc, el)=>{
         return acc + el.Kcal * el.cantidad   
     }, 0);
 
     const botonesEliminar = document.querySelectorAll(".botonEliminar");
     botonesEliminar.forEach(boton=> {
-        boton.addEventListener("click", eliminarDelCarrito)
+        boton.addEventListener("click", eliminarDeLaRutina)
     })
 }
 
-function eliminarDelCarrito(evento) {
+function eliminarDeLaRutina(evento) {
   const index = evento.target.getAttribute("data-index");
 
   Swal.fire({
@@ -193,8 +193,8 @@ function eliminarDelCarrito(evento) {
       cancelButtonText: 'Cancelar'
   }).then((result) => {
       if (result.isConfirmed) {
-          carrito.splice(index, 1);
-          actualizadoracarrito();
+          rutina.splice(index, 1);
+          actualizarrutina();
           Swal.fire(
               'Eliminado',
               'El ejercicio ha sido eliminado.',
@@ -205,7 +205,7 @@ function eliminarDelCarrito(evento) {
 }
 
 function finalizarEntrenamiento(){
-    const caloriasTotales = carrito.reduce ((acc, el)=> acc + el.Kcal * el.cantidad, 0);
+    const caloriasTotales = rutina.reduce ((acc, el)=> acc + el.Kcal * el.cantidad, 0);
   
     Swal.fire({
       title: "¡Enhorabuena!",
@@ -214,15 +214,15 @@ function finalizarEntrenamiento(){
       confirmButtonText: "Entendido",
     })
   
-    carrito = [];
-    actualizadoracarrito();
+    rutina = [];
+    actualizarrutina();
   }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const carritoGuardado = localStorage.getItem("carrito");
-    if (carritoGuardado) {
-        carrito =JSON.parse(carritoGuardado);
-        actualizadoracarrito ()
+    const rutinaGuardada = localStorage.getItem("rutina");
+    if (rutinaGuardada) {
+        rutina =JSON.parse(rutinaGuardada);
+        actualizarrutina ()
     }
 
     EjerciciosTrenSuperior.forEach((el) => {

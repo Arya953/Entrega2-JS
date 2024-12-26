@@ -10,7 +10,7 @@
     justify-content: center;
 }
 
-#carritoIcon {
+#rutinaIcon {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -24,13 +24,13 @@
     z-index: 1000;
 }
 
-#carritoIcon img {
+#rutinaIcon img {
     width: 30px;
     vertical-align: middle;
     margin-right: 10px;
 }
 
-#carrito {
+#rutina {
     position: fixed;
     top: 0;
     right: -100%;
@@ -47,11 +47,11 @@
     box-shadow: -4px 0px 10px rgba(0,0,0,0.3);  
 }
 
-#carrito.active {
+#rutina.active {
     right: 0;
 }
 
-#productoscarrito {
+#productosrutina {
     flex-grow: 1;  
     padding: 10px;
     margin-bottom: 20px;
