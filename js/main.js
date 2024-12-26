@@ -2,6 +2,12 @@ document.getElementById("carritoIcon").addEventListener("click", () => {
     document.getElementById("carrito").classList.toggle("active");
 });
 
+document.addEventListener('click', (event) => {
+    if (!carrito.contains(event.target) && event.target !== carritoIcon) {
+        carrito.classList.remove('active');
+    }
+});
+
 let carrito = [];
 
 const EjerciciosTrenSuperior = [
@@ -100,7 +106,8 @@ const EjerciciosCORE = [
 const productos = document.getElementById("productos")
 const treninferior = document.getElementById("treninferior")
 const core = document.getElementById("core")
-const productoscarrito = document.getElementById("productoscarrito")
+const productoscarrito = document.getElementById("productoscarrito");
+const finalizarEntrenamientoBtn = document.getElementById ("finalizarEntrenamiento");
 
 productos.addEventListener("click", (evento) => {
     if (evento.target.classList.contains("botonAgregador")) {
@@ -120,6 +127,8 @@ core.addEventListener("click", (evento) => {
     }
 })
 
+finalizarEntrenamientoBtn.addEventListener("click", finalizarEntrenamiento);
+
 function agregarAlCarrito(boton) {
     const producto = boton.parentElement;
     const nombre = producto.children[0].innerText;
@@ -136,6 +145,14 @@ function agregarAlCarrito(boton) {
             cantidad: 1,
         })
     }
+
+    Swal.fire({
+        title: '¡Agregado!',
+        text: `${nombre} fue añadido al seguimiento.`,
+        icon: 'success',
+        confirmButtonText: 'Entendido'
+    });
+
     actualizadoracarrito()
 }
 
@@ -147,12 +164,12 @@ function actualizadoracarrito() {
                 <h3>${el.nombre}</h3>
                 <p>Calorías: ${el.Kcal}</p>
                 <p>Repeticiones: ${el.cantidad}</p>
-                <button class="botonEliminar" data-index "${index}">X</button>
+                <button class="botonEliminar" data-index="${index}">X</button>
             </div>
         `
     })
 
-    localStorage.setItem("ccarrito", JSON.stringify(carrito));
+    localStorage.setItem("carrito", JSON.stringify(carrito));
 
     total.innerText = carrito.reduce((acc, el)=>{
         return acc + el.Kcal * el.cantidad   
@@ -165,10 +182,41 @@ function actualizadoracarrito() {
 }
 
 function eliminarDelCarrito(evento) {
-    const index = evento.target.getAttribute("data-index");
-    carrito.splice(index, 1);
-    actualizadoracarrito ()
+  const index = evento.target.getAttribute("data-index");
+
+  Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'El ejercicio será eliminado del carrito.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+  }).then((result) => {
+      if (result.isConfirmed) {
+          carrito.splice(index, 1);
+          actualizadoracarrito();
+          Swal.fire(
+              'Eliminado',
+              'El ejercicio ha sido eliminado.',
+              'success'
+          );
+      }
+  });
 }
+
+function finalizarEntrenamiento(){
+    const caloriasTotales = carrito.reduce ((acc, el)=> acc + el.Kcal * el.cantidad, 0);
+  
+    Swal.fire({
+      title: "¡Enhorabuena!",
+      text: `Has gastado ${caloriasTotales.toFixed(2)} calorías. ¡Sigue asi!`,
+      icon:"success",
+      confirmButtonText: "Entendido",
+    })
+  
+    carrito = [];
+    actualizadoracarrito();
+  }
 
 document.addEventListener("DOMContentLoaded", () => {
     const carritoGuardado = localStorage.getItem("carrito");
